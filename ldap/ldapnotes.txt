@@ -1,0 +1,200 @@
+=====================================
+1. List All Base DNs (Top-Level OUs)
+=====================================
+pingds@pingds:/opt/certs$   /opt/opendj/bin/ldapsearch \
+      --hostname pingds \
+      --port 1636 \
+      --useSSL \
+      --trustAll \
+      --bindDN "cn=Directory Manager" \
+      --bindPassword "Passw0rd123" \
+      --baseDN "" \
+      --searchScope one \
+      "(objectClass=*)" \
+      dn
+dn: ou=tokens
+
+dn: uid=Monitor
+
+dn: ou=am-config
+
+dn: ou=identities
+
+dn: cn=Directory Manager
+
+==================================
+2. Explore ou=identities Structure
+==================================
+pingds@pingds:/opt/certs$  /opt/opendj/bin/ldapsearch \
+      --hostname pingds \
+      --port 1636 \
+      --useSSL \
+      --trustAll \
+      --bindDN "cn=Directory Manager" \
+      --bindPassword "Passw0rd123" \
+      --baseDN "ou=identities" \
+      --searchScope sub \
+      "(objectClass=*)" \
+      dn objectClass
+dn: ou=identities
+objectClass: top
+objectClass: untypedObject
+
+dn: ou=people,ou=identities
+objectClass: top
+objectClass: organizationalunit
+
+dn: ou=groups,ou=identities
+objectClass: top
+objectClass: organizationalunit
+
+dn: ou=admins,ou=identities
+objectClass: top
+objectClass: organizationalunit
+
+dn: uid=am-identity-bind-account,ou=admins,ou=identities
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+
+=====================================
+3. Explore ou=am-config Structure
+=====================================
+pingds@pingds:/opt/certs$ /opt/opendj/bin/ldapsearch \
+      --hostname pingds \
+      --port 1636 \
+      --useSSL \
+      --trustAll \
+      --bindDN "cn=Directory Manager" \
+      --bindPassword "Passw0rd123" \
+      --baseDN "ou=am-config" \
+      --searchScope sub \
+      "(objectClass=*)" \
+      dn objectClass
+dn: ou=am-config
+objectClass: top
+objectClass: untypedObject
+
+dn: ou=admins,ou=am-config
+objectClass: top
+objectClass: organizationalUnit
+
+dn: uid=am-config,ou=admins,ou=am-config
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+
+=======================================
+4. Explore ou=tokens (CTS) Structure
+=======================================
+pingds@pingds:/opt/certs$ /opt/opendj/bin/ldapsearch \
+      --hostname pingds \
+      --port 1636 \
+      --useSSL \
+      --trustAll \
+      --bindDN "cn=Directory Manager" \
+      --bindPassword "Passw0rd123" \
+      --baseDN "ou=tokens" \
+      --searchScope sub \
+      "(objectClass=*)" \
+      dn objectClass
+dn: ou=tokens
+objectClass: top
+objectClass: untypedObject
+
+dn: ou=openam-session,ou=tokens
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=famrecords,ou=openam-session,ou=tokens
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=admins,ou=famrecords,ou=openam-session,ou=tokens
+objectClass: top
+objectClass: organizationalunit
+
+dn: uid=openam_cts,ou=admins,ou=famrecords,ou=openam-session,ou=tokens
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerso
+
+===========================================
+5. Check Available Object Classes for Users
+===========================================
+pingds@pingds:/opt/certs$ /opt/opendj/bin/ldapsearch \
+      --hostname pingds \
+      --port 1636 \
+      --useSSL \
+      --trustAll \
+      --bindDN "cn=Directory Manager" \
+      --bindPassword "Passw0rd123" \
+      --baseDN "cn=schema" \
+      --searchScope base \
+      "(objectClass=*)" \
+      objectClasses | grep -i "person\|user\|inetorg"
+objectClasses: ( 2.5.6.4 NAME 'organization' SUP top STRUCTURAL MUST o MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationaliSDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ st $ l $ description ) X-ORIGIN 'RFC 4519' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.5.6.5 NAME 'organizationalUnit' SUP top STRUCTURAL MUST ou MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationaliSDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ st $ l $ description ) X-ORIGIN 'RFC 4519' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.5.6.6 NAME 'person' SUP top STRUCTURAL MUST ( sn $ cn ) MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) X-ORIGIN 'RFC 4519' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.5.6.7 NAME 'organizationalPerson' SUP person STRUCTURAL MAY ( title $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationaliSDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ ou $ st $ l ) X-ORIGIN 'RFC 4519' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.5.6.10 NAME 'residentialPerson' SUP person STRUCTURAL MUST l MAY ( businessCategory $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationaliSDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ st ) X-ORIGIN 'RFC 4519' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.5.6.15 NAME 'strongAuthenticationUser' SUP top AUXILIARY MUST userCertificate X-ORIGIN 'RFC 4523' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.5.6.18 NAME 'userSecurityInformation' SUP top AUXILIARY MAY supportedAlgorithms X-ORIGIN 'RFC 4523' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.5.6.20 NAME 'dmd' SUP top STRUCTURAL MUST dmdName MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationaliSDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ st $ l $ description ) X-ORIGIN 'RFC 2256' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.5.6.21 NAME 'pkiUser' DESC 'X.509 PKI User' SUP top AUXILIARY MAY userCertificate X-ORIGIN 'RFC 4523' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 0.9.2342.19200300.100.4.13 NAME 'domain' SUP top STRUCTURAL MUST dc MAY ( userPassword $ searchGuide $ seeAlso $ businessCategory $ x121Address $ registeredAddress $ destinationIndicator $ preferredDeliveryMethod $ telexNumber $ teletexTerminalIdentifier $ telephoneNumber $ internationaliSDNNumber $ facsimileTelephoneNumber $ street $ postOfficeBox $ postalCode $ postalAddress $ physicalDeliveryOfficeName $ st $ l $ description $ o $ associatedName ) X-ORIGIN 'RFC 4524' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 0.9.2342.19200300.100.4.19 NAME 'simpleSecurityObject' SUP top AUXILIARY MUST userPassword X-ORIGIN 'RFC 4524' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 2.16.840.1.113730.3.2.2 NAME 'inetOrgPerson' SUP organizationalPerson STRUCTURAL MAY ( audio $ businessCategory $ carLicense $ departmentNumber $ displayName $ employeeNumber $ employeeType $ givenName $ homePhone $ homePostalAddress $ initials $ jpegPhoto $ labeledURI $ mail $ manager $ mobile $ o $ pager $ photo $ roomNumber $ secretary $ uid $ userCertificate $ x500UniqueIdentifier $ preferredLanguage $ userSMIMECertificate $ userPKCS12 ) X-ORIGIN 'RFC 2798' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 0.9.2342.19200300.100.4.4 NAME 'pilotPerson' SUP person STRUCTURAL MAY ( userid $ textEncodedORAddress $ rfc822Mailbox $ favouriteDrink $ roomNumber $ userClass $ homeTelephoneNumber $ homePostalAddress $ secretary $ personalTitle $ preferredDeliveryMethod $ businessCategory $ janetMailbox $ otherMailbox $ mobileTelephoneNumber $ pagerTelephoneNumber $ organizationalStatus $ mailPreferenceOption $ personalSignature ) X-ORIGIN 'RFC 1274' X-SCHEMA-FILE '00-core.ldif' )
+objectClasses: ( 1.3.6.1.4.1.42.2.27.8.2.1 NAME 'pwdPolicy' SUP top AUXILIARY MUST pwdAttribute MAY ( pwdMinAge $ pwdMaxAge $ pwdInHistory $ pwdCheckQuality $ pwdMinLength $ pwdExpireWarning $ pwdGraceAuthNLimit $ pwdLockout $ pwdLockoutDuration $ pwdMaxFailure $ pwdFailureCountInterval $ pwdMustChange $ pwdAllowUserChange $ pwdSafeModify ) X-ORIGIN 'draft-behera-ldap-password-policy' X-SCHEMA-FILE '01-pwpolicy.ldif' )
+objectClasses: ( 1.3.6.1.4.1.26027.1.2.61 NAME 'ds-cfg-password-policy' SUP ds-cfg-authentication-policy STRUCTURAL MUST ( ds-cfg-password-attribute $ ds-cfg-default-password-storage-scheme ) MAY ( ds-cfg-account-status-notification-handler $ ds-cfg-allow-expired-password-changes $ ds-cfg-allow-multiple-password-values $ ds-cfg-allow-pre-encoded-passwords $ ds-cfg-allow-user-password-changes $ ds-cfg-deprecated-password-storage-scheme $ ds-cfg-expire-passwords-without-warning $ ds-cfg-force-change-on-add $ ds-cfg-force-change-on-reset $ ds-cfg-grace-login-count $ ds-cfg-idle-lockout-interval $ ds-cfg-last-login-time-attribute $ ds-cfg-last-login-time-format $ ds-cfg-lockout-duration $ ds-cfg-lockout-failure-count $ ds-cfg-lockout-failure-expiration-interval $ ds-cfg-max-password-age $ ds-cfg-max-password-reset-age $ ds-cfg-min-password-age $ ds-cfg-password-change-requires-current-password $ ds-cfg-password-expiration-warning-interval $ ds-cfg-password-generator $ ds-cfg-password-validator $ ds-cfg-previous-last-login-time-format $ ds-cfg-require-change-by-time $ ds-cfg-require-secure-authentication $ ds-cfg-require-secure-password-changes $ ds-cfg-skip-validation-for-administrators $ ds-cfg-state-update-failure-policy $ ds-cfg-password-history-count $ ds-cfg-password-history-duration ) X-ORIGIN 'OpenDS Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.26027.1.2.82 NAME 'ds-certificate-user' SUP top AUXILIARY MAY ( userCertificate $ ds-certificate-subject-dn $ ds-certificate-issuer-dn $ ds-certificate-fingerprint ) X-ORIGIN 'OpenDS Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.26027.1.2.83 NAME 'ds-cfg-subject-dn-to-user-attribute-certificate-mapper' SUP ds-cfg-certificate-mapper STRUCTURAL MUST ds-cfg-subject-attribute MAY ds-cfg-user-base-dn X-ORIGIN 'OpenDS Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.26027.1.2.84 NAME 'ds-cfg-subject-attribute-to-user-attribute-certificate-mapper' SUP ds-cfg-certificate-mapper STRUCTURAL MUST ds-cfg-subject-attribute-mapping MAY ds-cfg-user-base-dn X-ORIGIN 'OpenDS Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.26027.1.2.85 NAME 'ds-cfg-fingerprint-certificate-mapper' SUP ds-cfg-certificate-mapper STRUCTURAL MUST ( ds-cfg-fingerprint-attribute $ ds-cfg-fingerprint-algorithm ) MAY ds-cfg-user-base-dn X-ORIGIN 'OpenDS Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.26027.1.2.99 NAME 'ds-cfg-user-defined-virtual-attribute' SUP ds-cfg-virtual-attribute STRUCTURAL MUST ds-cfg-value X-ORIGIN 'OpenDS Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.26027.1.2.112 NAME 'ds-cfg-password-policy-import-plugin' SUP ds-cfg-plugin STRUCTURAL MAY ( ds-cfg-default-user-password-storage-scheme $ ds-cfg-default-auth-password-storage-scheme ) X-ORIGIN 'OpenDS Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.26027.1.2.120 NAME 'ds-cfg-smtp-account-status-notification-handler' SUP ds-cfg-account-status-notification-handler STRUCTURAL MUST ( ds-cfg-sender-address $ ds-cfg-send-message-without-end-user-address $ ds-cfg-message-template-file ) MAY ( ds-cfg-email-address-attribute-type $ ds-cfg-recipient-address $ ds-cfg-message-subject $ ds-cfg-send-email-as-html ) X-ORIGIN 'OpenDS Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.1.2.7 NAME 'ds-cfg-access-log-filtering-criteria' SUP top STRUCTURAL MUST cn MAY ( ds-cfg-log-record-type $ ds-cfg-connection-client-address-equal-to $ ds-cfg-connection-client-address-not-equal-to $ ds-cfg-connection-protocol-equal-to $ ds-cfg-connection-port-equal-to $ ds-cfg-user-dn-equal-to $ ds-cfg-user-dn-not-equal-to $ ds-cfg-user-is-member-of $ ds-cfg-user-is-not-member-of $ ds-cfg-request-target-dn-equal-to $ ds-cfg-request-target-dn-not-equal-to $ ds-cfg-response-result-code-equal-to $ ds-cfg-response-result-code-not-equal-to $ ds-cfg-response-etime-greater-than $ ds-cfg-response-etime-less-than $ ds-cfg-search-response-nentries-greater-than $ ds-cfg-search-response-nentries-less-than $ ds-cfg-search-response-is-indexed $ ds-cfg-response-entry-size-greater-than $ ds-cfg-response-etime-queueing-greater-than $ ds-cfg-response-etime-queueing-less-than $ ds-cfg-response-etime-processing-greater-than $ ds-cfg-response-etime-processing-less-than ) X-ORIGIN 'OpenDJ Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.1.2.37 NAME 'ds-cfg-http-anonymous-authorization-mechanism' SUP ds-cfg-http-authorization-mechanism STRUCTURAL MAY ds-cfg-bind-user-dn X-ORIGIN 'OpenDJ Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.1.2.38 NAME 'ds-cfg-http-basic-authorization-mechanism' SUP ds-cfg-http-authorization-mechanism STRUCTURAL MUST ( ds-cfg-http-basic-alt-authentication-enabled $ ds-cfg-identity-mapper ) MAY ( ds-cfg-http-basic-alt-username-header $ ds-cfg-http-basic-alt-password-header ) X-ORIGIN 'OpenDJ Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.1.2.55 NAME 'ds-cfg-proxy-backend' SUP ds-cfg-backend STRUCTURAL MUST ( ds-cfg-shard $ ds-cfg-proxy-route-all ) MAY ( ds-cfg-base-dn $ ds-cfg-proxy-user-dn $ ds-cfg-proxy-user-password $ ds-cfg-partition-base-dn $ ds-cfg-connection-timeout $ ds-cfg-keep-alive-interval $ ds-cfg-keep-alive-timeout $ ds-cfg-keep-alive-search-request-base-dn $ ds-cfg-keep-alive-search-request-filter $ ds-cfg-availability-check-interval $ ds-cfg-availability-check-timeout $ ds-cfg-availability-check-search-request-base-dn $ ds-cfg-availability-check-search-request-filter $ ds-cfg-discovery-interval $ ds-cfg-connection-pool-min-size $ ds-cfg-connection-pool-max-size $ ds-cfg-connection-pool-idle-timeout $ ds-cfg-hash-function $ ds-cfg-key-manager-provider $ ds-cfg-ssl-cert-nickname $ ds-cfg-use-sasl-external ) X-ORIGIN 'OpenDJ Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.1.2.61 NAME 'ds-cfg-global-access-control-policy' SUP top STRUCTURAL MUST cn MAY ( ds-cfg-connection-client-address-equal-to $ ds-cfg-connection-client-address-not-equal-to $ ds-cfg-connection-protocol-equal-to $ ds-cfg-connection-port-equal-to $ ds-cfg-connection-minimum-ssf $ ds-cfg-authentication-required $ ds-cfg-user-dn-equal-to $ ds-cfg-user-dn-not-equal-to $ ds-cfg-request-target-dn-equal-to-user-dn $ ds-cfg-request-target-dn-equal-to $ ds-cfg-request-target-dn-not-equal-to $ ds-cfg-allowed-control $ ds-cfg-allowed-extended-operation $ ds-cfg-allowed-attribute $ ds-cfg-allowed-attribute-exception $ ds-cfg-permission ) X-ORIGIN 'OpenDJ Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.1.2.101 NAME 'ds-cfg-mail-server' SUP top STRUCTURAL MUST ( cn $ ds-cfg-smtp-server $ ds-cfg-enabled ) MAY ( ds-cfg-use-ssl $ ds-cfg-use-start-tls $ ds-cfg-auth-username $ ds-cfg-auth-password $ ds-cfg-smtp-property $ ds-cfg-trust-manager-provider ) X-ORIGIN 'OpenDJ Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.1.2.125 NAME 'ds-cfg-user-template-virtual-attribute' SUP ds-cfg-virtual-attribute STRUCTURAL MUST ds-cfg-template X-ORIGIN 'ForgeRock Directory Server' X-SCHEMA-FILE '02-config.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.1.2.110 NAME 'ds-pwp-password-policy' SUP top AUXILIARY MUST ( ds-pwp-password-attribute $ ds-pwp-default-password-storage-scheme ) MAY ( cn $ ds-pwp-min-password-age $ ds-pwp-max-password-age $ ds-pwp-password-history-count $ ds-pwp-password-expiration-warning-interval $ ds-pwp-grace-login-count $ ds-pwp-lockout-duration $ ds-pwp-lockout-failure-count $ ds-pwp-force-change-on-reset $ ds-pwp-allow-user-password-changes $ ds-pwp-password-change-requires-current-password $ ds-pwp-lockout-failure-expiration-interval $ ds-pwp-account-status-notification-handler $ ds-pwp-allow-expired-password-changes $ ds-pwp-allow-multiple-password-values $ ds-pwp-allow-pre-encoded-passwords $ ds-pwp-deprecated-password-storage-scheme $ ds-pwp-expire-passwords-without-warning $ ds-pwp-force-change-on-add $ ds-pwp-idle-lockout-interval $ ds-pwp-last-login-time-attribute $ ds-pwp-last-login-time-format $ ds-pwp-max-password-reset-age $ ds-pwp-previous-last-login-time-format $ ds-pwp-require-change-by-time $ ds-pwp-require-secure-authentication $ ds-pwp-require-secure-password-changes $ ds-pwp-skip-validation-for-administrators $ ds-pwp-state-update-failure-policy $ ds-pwp-password-history-duration ) X-ORIGIN 'ForgeRock Directory Server' X-SCHEMA-FILE '03-pwpolicyextension.ldif' )
+objectClasses: ( 1.3.18.0.2.6.258 NAME 'printerAbstract' DESC 'Printer related information.' SUP top ABSTRACT MAY ( printer-name $ printer-natural-language-configured $ printer-location $ printer-info $ printer-more-info $ printer-make-and-model $ printer-multiple-document-jobs-supported $ printer-charset-configured $ printer-charset-supported $ printer-generated-natural-language-supported $ printer-document-format-supported $ printer-color-supported $ printer-compression-supported $ printer-pages-per-minute $ printer-pages-per-minute-color $ printer-finishings-supported $ printer-number-up-supported $ printer-sides-supported $ printer-media-supported $ printer-media-local-supported $ printer-resolution-supported $ printer-print-quality-supported $ printer-job-priority-supported $ printer-copies-supported $ printer-job-k-octets-supported $ printer-current-operator $ printer-service-person $ printer-delivery-orientation-supported $ printer-stacking-order-supported $ printer-output-features-supported ) X-ORIGIN 'RFC 3712' X-SCHEMA-FILE '03-rfc3712.ldif' )
+objectClasses: ( 1.3.6.1.1.10.6.2 NAME 'uddiContact' SUP top STRUCTURAL MUST ( uddiPersonName $ uddiUUID ) MAY ( uddiUseType $ uddiDescription $ uddiPhone $ uddiEMail ) X-ORIGIN 'RFC 4403' X-SCHEMA-FILE '03-uddiv3.ldif' )
+objectClasses: ( 1.3.6.1.1.1.2.0 NAME 'posixAccount' DESC 'Abstraction of an account with POSIX attributes' SUP top AUXILIARY MUST ( cn $ uid $ uidNumber $ gidNumber $ homeDirectory ) MAY ( authPassword $ userPassword $ loginShell $ gecos $ description ) X-ORIGIN 'draft-howard-rfc2307bis' X-SCHEMA-FILE '04-rfc2307bis.ldif' )
+objectClasses: ( 1.3.6.1.1.1.2.1 NAME 'shadowAccount' DESC 'Additional attributes for shadow passwords' SUP top AUXILIARY MUST uid MAY ( authPassword $ userPassword $ description $ shadowLastChange $ shadowMin $ shadowMax $ shadowWarning $ shadowInactive $ shadowExpire $ shadowFlag ) X-ORIGIN 'draft-howard-rfc2307bis' X-SCHEMA-FILE '04-rfc2307bis.ldif' )
+objectClasses: ( 1.3.6.1.1.1.2.2 NAME 'posixGroup' DESC 'Abstraction of a group of accounts' SUP top AUXILIARY MUST gidNumber MAY ( authPassword $ userPassword $ memberUid $ description ) X-ORIGIN 'draft-howard-rfc2307bis' X-SCHEMA-FILE '04-rfc2307bis.ldif' )
+objectClasses: ( 1.3.6.1.1.1.2.6 NAME 'ipHost' DESC 'Abstraction of a host, an IP device. The distinguished value of the cn attribute denotes the canonical name of the host. Device SHOULD be used as a structural class' SUP top AUXILIARY MUST ( cn $ ipHostNumber ) MAY ( authPassword $ userPassword $ l $ description $ manager ) X-ORIGIN 'draft-howard-rfc2307bis' X-SCHEMA-FILE '04-rfc2307bis.ldif' )
+objectClasses: ( 1.3.6.1.4.1.7165.2.2.6 NAME 'sambaSamAccount' DESC 'Samba 3.0 Auxilary SAM Account' SUP top AUXILIARY MUST ( uid $ sambaSID ) MAY ( cn $ sambaLMPassword $ sambaNTPassword $ sambaPwdLastSet $ sambaLogonTime $ sambaLogoffTime $ sambaKickoffTime $ sambaPwdCanChange $ sambaPwdMustChange $ sambaAcctFlags $ displayName $ sambaHomePath $ sambaHomeDrive $ sambaLogonScript $ sambaProfilePath $ description $ sambaUserWorkstations $ sambaPrimaryGroupSID $ sambaDomainName $ sambaMungedDial $ sambaBadPasswordCount $ sambaBadPasswordTime $ sambaPasswordHistory $ sambaLogonHours ) X-SCHEMA-FILE '05-samba.ldif' )
+objectClasses: ( 1.3.6.1.4.1.7165.2.2.5 NAME 'sambaDomain' DESC 'Samba Domain Information' SUP top STRUCTURAL MUST ( sambaDomainName $ sambaSID ) MAY ( sambaNextRid $ sambaNextGroupRid $ sambaNextUserRid $ sambaAlgorithmicRidBase $ sambaMinPwdLength $ sambaPwdHistoryLength $ sambaLogonToChgPwd $ sambaMaxPwdAge $ sambaMinPwdAge $ sambaLockoutDuration $ sambaLockoutObservationWindow $ sambaLockoutThreshold $ sambaForceLogoff $ sambaRefuseMachinePwdChange ) X-SCHEMA-FILE '05-samba.ldif' )
+objectClasses: ( 1.3.6.1.4.1.42.2.27.1.2.6 NAME 'nisNetId' SUP top STRUCTURAL MUST cn MAY ( nisNetIdUser $ nisNetIdGroup $ nisNetIdHost ) X-ORIGIN 'Solaris Specific' X-SCHEMA-FILE '05-solaris.ldif' )
+objectClasses: ( 1.3.6.1.4.1.42.2.27.5.2.2 NAME 'SolarisAuditUser' SUP top AUXILIARY MAY ( SolarisAuditAlways $ SolarisAuditNever ) X-ORIGIN 'Solaris Specific' X-SCHEMA-FILE '05-solaris.ldif' )
+objectClasses: ( 1.3.6.1.4.1.42.2.27.5.2.3 NAME 'SolarisUserAttr' DESC 'User attributes' SUP top AUXILIARY MAY ( SolarisUserQualifier $ SolarisAttrReserved1 $ SolarisAttrReserved2 $ SolarisAttrKeyValue ) X-ORIGIN 'Solaris Specific' X-SCHEMA-FILE '05-solaris.ldif' )
+objectClasses: ( 1.3.6.1.4.1.36733.2.2.2.27 NAME 'frCoreToken' DESC 'object containing ForgeRock Core Token' SUP top STRUCTURAL MUST ( coreTokenId $ coreTokenType ) MAY ( coreTokenExpirationDate $ coreTokenUserId $ coreTokenObject $ coreTokenString01 $ coreTokenString02 $ coreTokenString03 $ coreTokenString04 $ coreTokenString05 $ coreTokenString06 $ coreTokenString07 $ coreTokenString08 $ coreTokenString09 $ coreTokenString10 $ coreTokenString11 $ coreTokenString12 $ coreTokenString13 $ coreTokenString14 $ coreTokenString15 $ coreTokenInteger01 $ coreTokenInteger02 $ coreTokenInteger03 $ coreTokenInteger04 $ coreTokenInteger05 $ coreTokenInteger06 $ coreTokenInteger07 $ coreTokenInteger08 $ coreTokenInteger09 $ coreTokenInteger10 $ coreTokenDate01 $ coreTokenDate02 $ coreTokenDate03 $ coreTokenDate04 $ coreTokenDate05 $ coreTokenMultiString01 $ coreTokenMultiString02 $ coreTokenMultiString03 $ coreTokenTtlDate ) X-STABILITY 'Internal' X-ORIGIN 'ForgeRock OpenAM CTSv2' X-SCHEMA-FILE '60-cts-schema.ldif' )
+objectClasses: ( 2.16.840.1.113730.3.2.176 NAME 'iplanet-am-user-service' DESC 'User Service OC' SUP top AUXILIARY MAY ( iplanet-am-user-auth-modules $ iplanet-am-user-login-status $ iplanet-am-user-admin-start-dn $ iplanet-am-user-auth-config $ iplanet-am-user-alias-list $ iplanet-am-user-success-url $ iplanet-am-user-failure-url $ iplanet-am-user-password-reset-options $ iplanet-am-user-password-reset-question-answer $ iplanet-am-user-password-reset-force-reset $ sunIdentityMSISDNNumber ) X-ORIGIN 'OpenSSO' X-SCHEMA-FILE '60-identity-store-ds-schema.ldif' )
+objectClasses: ( 2.16.840.1.113730.3.2.184 NAME 'iplanet-am-managed-person' DESC 'Managed Person OC' SUP top AUXILIARY MAY iplanet-am-user-account-life X-ORIGIN 'OpenSSO' X-SCHEMA-FILE '60-identity-store-ds-schema.ldif' )
+objectClasses: ( 2.16.840.1.113730.3.2.130 NAME 'inetuser' DESC 'Auxiliary class which has to be present in an entry for delivery of subscriber services' SUP top AUXILIARY MAY ( uid $ inetUserStatus $ inetUserHTTPURL $ userPassword $ memberof ) X-ORIGIN 'Nortel subscriber interoperability' X-SCHEMA-FILE '60-identity-store-ds-schema.ldif' )
+
+===============================
+6. List Existing Users (if any)
+===============================
+pingds@pingds:/opt/certs$ /opt/opendj/bin/ldapsearch \
+      --hostname pingds \
+      --port 1636 \
+      --useSSL \
+      --trustAll \
+      --bindDN "cn=Directory Manager" \
+      --bindPassword "Passw0rd123" \
+      --baseDN "ou=identities" \
+      --searchScope sub \
+      "(objectClass=person)" \
+      dn cn mail
+dn: uid=am-identity-bind-account,ou=admins,ou=identities
+cn: am-identity-bind-account
