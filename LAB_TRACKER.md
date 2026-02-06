@@ -47,9 +47,85 @@
 
 ---
 
+## IDM Lead Engineer Curriculum Progress
+
+**Target Role:** ForgeRock/Ping IDM Lead Engineer (7-8 years experience)
+**Start Date:** 2026-02-06 (Session 18)
+**Approach:** Systematic curriculum following `frnotes/idm/IDM_CURRICULUM.md`
+
+### Phase 1: Foundation (Sessions 18-23)
+
+| # | Topic | Status | Q&A Files | Notes |
+|---|-------|--------|-----------|-------|
+| 1 | IDM Architecture & Fundamentals | ✅ Completed | `INT_QA_IDM_Arch_1.md`, `INT_QA_IDM_Arch_2.md`, `INT_QA_IDM_Arch_3.md` | Session 18: 15 Q&A covering managed objects, link table, repo arch, ICF, sync models, MVCC, config overlay, HA clustering, competitive analysis |
+| 2 | Connector Development & Configuration | ⏳ Planned | | ICF framework, LDAP/DB/REST/CSV connectors |
+| 3 | Mapping & Synchronization | ⏳ Planned | | Transformations, situation policies, correlation |
+| 4 | Reconciliation Deep Dive | ⏳ Planned | | Full recon, LiveSync, performance optimization |
+| 5 | Workflows & Business Logic | ⏳ Planned | | Approval flows, joiner/mover/leaver patterns |
+| 6 | Self-Service & End User Experience | ⏳ Planned | | Registration, password reset, profile management |
+
+### Phase 2: Advanced (Sessions 24-29) - Planned
+
+| # | Topic | Status | Notes |
+|---|-------|--------|-------|
+| 7 | Roles, Entitlements & Provisioning | ⏳ Planned | Role model design, RBAC vs ABAC |
+| 8 | Security & Authentication | ⏳ Planned | OAuth2/OIDC, SAML, API security |
+| 9 | Integration Patterns | ⏳ Planned | AM-IDM Platform mode, SCIM, HR feeds |
+| 10 | Performance & Scalability | ⏳ Planned | Clustering, caching, monitoring |
+| 11 | Production Operations | ⏳ Planned | Deployment, backup/restore, DR |
+| 12 | Upgrade & Migration | ⏳ Planned | Version upgrades, schema migration |
+
+### Phase 3: Expert (Sessions 30-35) - Planned
+
+| # | Topic | Status | Notes |
+|---|-------|--------|-------|
+| 13 | DevOps & Automation | ⏳ Planned | K8s, Helm, CI/CD, GitOps |
+| 14 | Advanced Scripting | ⏳ Planned | Groovy, JavaScript, performance optimization |
+| 15 | Troubleshooting & Debugging | ⏳ Planned | Log analysis, performance profiling |
+| 16 | Design & Architecture | ⏳ Planned | Multi-tenant, HA, trade-off analysis |
+| 17 | Compliance & Governance | ⏳ Planned | Audit, certification, SoD, GDPR |
+| 18 | Team Leadership & Best Practices | ⏳ Planned | Code review, mentoring, technical debt |
+
+---
+
 ## Current Session Context
 
-### Current Lab: Lab 4 - SAML2 Federation (In Progress)
+### Session 18 - 2026-02-06: IDM Architecture & Fundamentals (Completed)
+
+**Goal:** Start fresh IDM curriculum for Lead Engineer interview preparation
+
+**Completed:**
+- ✅ Updated LAB_TRACKER.md with IDM curriculum tracking (Phase 1-3)
+- ✅ Topic 1: IDM Architecture & Fundamentals (15 interview Q&A)
+- ✅ Created 3 Q&A files:
+  - `INT_QA_IDM_Arch_1.md` (Q1-Q7): Managed objects, link table, repo architecture, DS structure, data storage models
+  - `INT_QA_IDM_Arch_2.md` (Q8-Q11): ICF framework, sync models, mappings, MVCC concurrency
+  - `INT_QA_IDM_Arch_3.md` (Q12-Q15): Link qualifiers, config overlay, HA clustering, competitive comparison
+- ✅ Examined live IDM/DS environment (managed users, link table entries via DS queries + REST API)
+- ✅ Context usage: 76,206 / 200,000 tokens (38% used, plenty of room)
+
+**Key Topics Covered (Lead-Level Depth):**
+1. Canonical identity model (managed objects vs external resources)
+2. Link table architecture (firstId/secondId, link qualifiers for multi-account)
+3. Repository patterns (DS vs JDBC trade-offs, two-DS architecture with AM)
+4. DS physical structure (ou=managed, ou=links, ou=cluster, ou=locks)
+5. Data storage (JSON-in-LDAP for IDM vs LDAP attributes for AM)
+6. ICF connector framework (abstraction layer, vendor-neutral)
+7. Three sync models (full recon, LiveSync, implicit sync)
+8. MVCC optimistic locking (_rev field, If-Match header)
+9. Config file architecture (overlay pattern, GitOps-friendly)
+10. HA/clustered deployment (multi-node IDM, multi-master DS, distributed locking)
+11. Competitive analysis (Okta, SailPoint, Azure AD comparison)
+
+**User Status:** Reviewing INT_QA_IDM_Arch notes (1/2/3.md) before quiz on Topic 1
+
+**Next Actions:**
+1. Quiz on Topic 1 (when user is ready) - 15 questions testing lead-level understanding
+2. After quiz passes → Move to Topic 2: Connector Development & Configuration
+
+---
+
+### Previous Lab Context: Lab 4 - SAML2 Federation (Archived)
 
 **Objective**: Configure SAML2 IdP + SP federation across realms, integrate with sample-app
 
